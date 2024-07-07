@@ -41,7 +41,8 @@ def on_color_change():
     update_image()
 
 
-def on_slider_change():
+
+def on_slider_change(event=None):
     for i, key in enumerate(['lower', 'upper']):
         for j, channel in enumerate(['h', 's', 'v']):
             colors[selected_color][key][j] = sliders[i][j].get()
@@ -66,10 +67,10 @@ for i, key in enumerate(['Lower', 'Upper']):
     frame.pack(fill="both", expand="yes")
     channel_sliders = []
     for j, channel in enumerate(['H', 'S', 'V']):
-        scale = Scale(frame, from_=0, to=255, orient=tk.HORIZONTAL, label=channel)
+        scale = Scale(frame, from_=0, to=255, orient=tk.HORIZONTAL, length=400, width=20, label=channel)
         scale.pack()
         scale.set(colors[selected_color][key.lower()][j])
-        scale.bind("<Motion>", lambda event: on_slider_change())
+        scale.bind("<Motion>", on_slider_change)
         channel_sliders.append(scale)
     sliders.append(channel_sliders)
 
