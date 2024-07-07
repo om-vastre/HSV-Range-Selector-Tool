@@ -31,7 +31,7 @@ def pick_color():
 
 # starting HSV values
 colors = {
-    'Custom': {'lower': [25, 40, 40], 'upper': [85, 255, 255]}
+    'Custom': {'lower': [0, 50, 50], 'upper': [10, 255, 255]}
 }
 
 selected_color = 'Custom'
@@ -94,7 +94,7 @@ pick_color_button = Button(root, text="Pick Color", command=pick_color)
 pick_color_button.pack(pady=10)
 
 
-# sliders & spinboxes
+# sliders and spinboxes
 sliders = []
 spinboxes = []
 for i, key in enumerate(['Lower', 'Upper']):
@@ -102,17 +102,17 @@ for i, key in enumerate(['Lower', 'Upper']):
     frame.pack(fill="both", expand="yes")
     channel_sliders = []
     channel_spinboxes = []
-    for j, channel in enumerate(['H', 'S', 'V']):
+    for j, (channel, max_value) in enumerate([('H', 179), ('S', 255), ('V', 255)]):
         sub_frame = tk.Frame(frame)
         sub_frame.pack(fill="x", pady=5)
 
-        scale = Scale(sub_frame, from_=0, to=255, orient=tk.HORIZONTAL, length=400, width=20, label=channel)
+        scale = Scale(sub_frame, from_=0, to=max_value, orient=tk.HORIZONTAL, length=400, width=20, label=channel)
         scale.pack(side=tk.LEFT)
         scale.set(colors[selected_color][key.lower()][j])
         scale.bind("<Motion>", on_slider_change)
         channel_sliders.append(scale)
 
-        spinbox = Spinbox(sub_frame, from_=0, to=255, width=5, command=on_spinbox_change)
+        spinbox = Spinbox(sub_frame, from_=0, to=max_value, width=5, command=on_spinbox_change)
         spinbox.pack(side=tk.LEFT, padx=5)
         spinbox.delete(0, tk.END)
         spinbox.insert(0, colors[selected_color][key.lower()][j])
@@ -121,9 +121,6 @@ for i, key in enumerate(['Lower', 'Upper']):
 
     sliders.append(channel_sliders)
     spinboxes.append(channel_spinboxes)
-
-
-
 
 root.mainloop()
 
