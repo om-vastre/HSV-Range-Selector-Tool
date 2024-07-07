@@ -3,8 +3,10 @@ import numpy as np
 import tkinter as tk
 from tkinter import Scale, Radiobutton, IntVar, Spinbox
 
+
 image = cv2.imread("O:\\Projects\\ML\\NPK Detection\\N Deficiency Detection\\mask_extracted\\masked_dis_leaf (210)_iaip.jpg")
 hsv_image = cv2.cvtColor(image, cv2.COLOR_BGR2HSV)
+
 
 
 colors = {
@@ -59,9 +61,9 @@ def on_spinbox_change():
     update_image()
 
 
-
 root = tk.Tk()
 root.title("Color Detection")
+
 
 color_var = tk.StringVar(value=selected_color)
 for color in colors.keys():
@@ -77,14 +79,17 @@ for i, key in enumerate(['Lower', 'Upper']):
     channel_sliders = []
     channel_spinboxes = []
     for j, channel in enumerate(['H', 'S', 'V']):
-        scale = Scale(frame, from_=0, to=255, orient=tk.HORIZONTAL, length=400, width=20, label=channel)
+        sub_frame = tk.Frame(frame)
+        sub_frame.pack(fill="x", pady=5)
+
+        scale = Scale(sub_frame, from_=0, to=255, orient=tk.HORIZONTAL, length=400, width=20, label=channel)
         scale.pack(side=tk.LEFT)
         scale.set(colors[selected_color][key.lower()][j])
         scale.bind("<Motion>", on_slider_change)
         channel_sliders.append(scale)
 
-        spinbox = Spinbox(frame, from_=0, to=255, width=5, command=on_spinbox_change)
-        spinbox.pack(side=tk.LEFT)
+        spinbox = Spinbox(sub_frame, from_=0, to=255, width=5, command=on_spinbox_change)
+        spinbox.pack(side=tk.LEFT, padx=5)
         spinbox.delete(0, tk.END)
         spinbox.insert(0, colors[selected_color][key.lower()][j])
         spinbox.bind("<KeyRelease>", lambda event: on_spinbox_change())
